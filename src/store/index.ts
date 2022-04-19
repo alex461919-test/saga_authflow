@@ -29,6 +29,6 @@ export const useAuthState = () => useAppSelector((state) => state.api.auth);
 export const useProfile = () => useAppSelector((state) => state.api.auth.profile);
 export const useFetchProcess = () => useAppSelector((state) => state.api.fetchProcess);
 
-sagaMiddleware.run(rootSaga);
-
 export const Api = createApi(store);
+
+sagaMiddleware.run(rootSaga);
