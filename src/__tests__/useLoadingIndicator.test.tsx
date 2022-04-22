@@ -8,7 +8,7 @@ import { addFetchProcess, removeFetchProcess } from '../store/reducers';
 import { message } from 'antd';
 import { useLoadingIndicator } from '../mix/loadingIndicator';
 
-//jest.mock('antd');
+jest.mock('antd');
 /*, () => {
   return { message: { open: jest.fn() } };
 });*/

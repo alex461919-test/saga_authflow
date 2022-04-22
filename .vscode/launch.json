@@ -18,3 +18,10 @@
     }
   ]
 }
+/*
+  "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+
+"console": "internalConsole",
+"internalConsoleOptions": "openOnSessionStart",
+*/

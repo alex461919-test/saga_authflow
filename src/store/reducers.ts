@@ -32,7 +32,7 @@ export { ActionsType, setLoginFailure, setLoginSuccess, setLogout, setToken, onL
 export { addFetchProcess, removeFetchProcess };
 export { onGetProfile, onLogin /*onLogout*/ };
 
-const initialState = {
+export const initialState = {
   auth: { profile: null, error: null, token: null, status: AuthStatus.LoggedOut } as AuthState,
   fetchProcess: [] as string[],
 };

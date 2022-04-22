@@ -13,6 +13,7 @@ function* fetchData<P>(fn: any, ...args: any): Generator<Effect, P, any> {
       return result.data;
     } catch (error: any) {
       //
+
       const code: number | null = error.response ? error.response.status : null;
       const savedToken: string | null = yield select((state: RootState) => state.api.auth.token);
 
@@ -26,7 +27,7 @@ function* fetchData<P>(fn: any, ...args: any): Generator<Effect, P, any> {
         } catch (refresh_error: any) {
           yield call(_set_logout);
           yield put(onLogout());
-          throw error;
+          throw refresh_error;
         }
       } else {
         throw error;
@@ -116,69 +117,4 @@ export default function* rootSaga() {
   yield all([call(loginFlow), takeLatest(ActionsType.ON_GET_PROFILE, profile)]);
 }
 
-/*
-
-function* profile1(): Generator<Effect, void, any> {
-  while (true) {
-    try {
-      const { token, ...profile }: ProfileWithToken = yield call(fetchData, Api.axios.get, '/api/auth/profile');
-      yield put(setLoginSuccess({ profile }));
-      return;
-    } catch (error: any) {
-      const code: number | null = error.response ? error.response.status : null;
-      if (code === 401) return;
-      yield delay(5000);
-    }
-  }
-}
-
-
-function* loginFlow(): Generator<Effect, void, any> {
-  const token: string | null = yield call(Api.getToken);
-  if (token) {
-    yield put(setToken(token));
-    yield call(profile);
-  }
-
-  while (true) {
-    const authStatue: AuthStatus = yield select((state: RootState) => state.api.auth.status);
-    if (authStatue !== AuthStatus.LoggedIn) {
-      //
-      const {
-        payload: { username, password },
-      }: PayloadAction<Credential, string> = yield take(ActionsType.ON_LOGIN);
-      yield put(setLogout());
-      yield call(authorize, username, password);
-    } else {
-      yield take([ActionsType.ON_LOGOUT, ActionsType.ON_EMERGENCY_LOGOUT]);
-      try {
-        yield call(Api.axios.post, '/api/auth/logout');
-      } catch (error: any) {}
-      yield call(set_logout);
-    }
-  }
-}
-function* whoami(): Generator<Effect, void, any> {
-  while (true) {
-    try {
-      const { token, ...profile }: ProfileWithToken = yield call(fetchData, Api.axios.get, '/api/auth/whoami');
-      console.log('whoami. profile: ', profile);
-      if (profile?.id) {
-        yield put(setLoginSuccess({ profile }));
-      } else {
-        yield call(set_logout);
-      }
-      return;
-    } catch (error: any) {
-      const code: number | null = error.response ? error.response.status : null;
-      if (code === 401) {
-        yield call(set_logout);
-      } else {
-        yield delay(5000);
-      }
-    }
-  }
-}
-
-
-*/
+export const exportedForTesting = { profile, autoLogin, loginFlow, _set_logout, authorize, fetchData };
