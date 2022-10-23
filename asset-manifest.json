@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/saga_authflow/static/css/main.b7579def.css",
-    "main.js": "/saga_authflow/static/js/main.d4957175.js",
+    "main.js": "/saga_authflow/static/js/main.4c645fb2.js",
     "static/js/787.a3e0d738.chunk.js": "/saga_authflow/static/js/787.a3e0d738.chunk.js",
     "index.html": "/saga_authflow/index.html",
     "main.b7579def.css.map": "/saga_authflow/static/css/main.b7579def.css.map",
-    "main.d4957175.js.map": "/saga_authflow/static/js/main.d4957175.js.map",
+    "main.4c645fb2.js.map": "/saga_authflow/static/js/main.4c645fb2.js.map",
     "787.a3e0d738.chunk.js.map": "/saga_authflow/static/js/787.a3e0d738.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b7579def.css",
-    "static/js/main.d4957175.js"
+    "static/js/main.4c645fb2.js"
   ]
 }
