@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.b7579def.css",
-    "main.js": "/static/js/main.2c06f7df.js",
-    "static/js/787.a3e0d738.chunk.js": "/static/js/787.a3e0d738.chunk.js",
-    "index.html": "/index.html",
-    "main.b7579def.css.map": "/static/css/main.b7579def.css.map",
-    "main.2c06f7df.js.map": "/static/js/main.2c06f7df.js.map",
-    "787.a3e0d738.chunk.js.map": "/static/js/787.a3e0d738.chunk.js.map"
+    "main.css": "/saga_authflow/static/css/main.b7579def.css",
+    "main.js": "/saga_authflow/static/js/main.d4957175.js",
+    "static/js/787.a3e0d738.chunk.js": "/saga_authflow/static/js/787.a3e0d738.chunk.js",
+    "index.html": "/saga_authflow/index.html",
+    "main.b7579def.css.map": "/saga_authflow/static/css/main.b7579def.css.map",
+    "main.d4957175.js.map": "/saga_authflow/static/js/main.d4957175.js.map",
+    "787.a3e0d738.chunk.js.map": "/saga_authflow/static/js/787.a3e0d738.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b7579def.css",
-    "static/js/main.2c06f7df.js"
+    "static/js/main.d4957175.js"
   ]
 }
