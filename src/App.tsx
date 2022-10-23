@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import debounce from 'lodash.debounce';
+import React from 'react';
 import './App.scss';
 import Auth from './Auth';
-import { ReduxStore, useAppStore } from './store';
-import { message } from 'antd';
+import { useAppStore } from './store';
 import { useLoadingIndicator } from './mix/loadingIndicator';
 
 function App() {

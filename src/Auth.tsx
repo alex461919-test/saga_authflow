@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, Row, Col, Space, Typography } from 'antd';
-import { useAuthState, useProfile } from './store';
+import { Form, Input, Button, Row, Col, Space, Typography } from 'antd';
+import { useAuthState } from './store';
 import { AuthStatus, Credential } from './store/auth';
 import { useDispatch } from 'react-redux';
 import { onGetProfile, onLogin, onLogout } from './store/reducers';
