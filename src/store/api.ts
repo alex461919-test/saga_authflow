@@ -8,13 +8,13 @@ const createApi = ({ getState, dispatch }: ReduxStore) => {
     timeout: 15000,
     //headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json'},
   });
-
+  const request_id_ref = Symbol('id');
   axiosInstance.interceptors.request.use(
     function (config) {
       const token = getState().api.auth.token;
       if (token) config.headers = { ...config.headers, Authorization: token };
       const requestId = (Math.random() + 1).toString(36).substring(2);
-      Object.defineProperty(config, 'requestId', { value: requestId });
+      Object.defineProperty(config, request_id_ref, { value: requestId });
       dispatch(addFetchProcess(requestId));
       if (config.signal) {
         config.signal.onabort = () => dispatch(removeFetchProcess(requestId));
@@ -28,12 +28,13 @@ const createApi = ({ getState, dispatch }: ReduxStore) => {
 
   axiosInstance.interceptors.response.use(
     function (response) {
-      const requestId = Object.getOwnPropertyDescriptor(response.config, 'requestId')?.value;
+      const requestId = Object.getOwnPropertyDescriptor(response.config, request_id_ref)?.value;
       requestId && dispatch(removeFetchProcess(requestId));
       return response;
     },
     function (error) {
-      const requestId = Object.getOwnPropertyDescriptor(error.response.config, 'requestId')?.value;
+      // console.dir(JSON.parse(JSON.stringify(error)));
+      const requestId = Object.getOwnPropertyDescriptor(error.config, request_id_ref)?.value;
       requestId && dispatch(removeFetchProcess(requestId));
       return Promise.reject(error);
     }

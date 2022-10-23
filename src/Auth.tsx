@@ -108,7 +108,6 @@ const AuthForm = () => {
   const dispatch = useDispatch();
   const auth = useAuthState();
   const onFinish = (values: Credential) => {
-    //  console.log('Success:', values);
     dispatch(onLogin(values));
   };
   const onLogoutClick: React.MouseEventHandler<HTMLElement> = useCallback(
@@ -138,6 +137,9 @@ const AuthForm = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
+      <Title level={4} style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        Authorization
+      </Title>
       <Form.Item
         label="Username"
         name="username"

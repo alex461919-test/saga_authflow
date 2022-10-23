@@ -13,7 +13,6 @@ function* fetchData<P>(fn: any, ...args: any): Generator<Effect, P, any> {
       return result.data;
     } catch (error: any) {
       //
-
       const code: number | null = error.response ? error.response.status : null;
       const savedToken: string | null = yield select((state: RootState) => state.api.auth.token);
 
@@ -38,16 +37,15 @@ function* fetchData<P>(fn: any, ...args: any): Generator<Effect, P, any> {
 
 function* authorize(username: string, password: string): Generator<Effect, void, any> {
   const controller = new AbortController();
+
   try {
     const {
       data: { token, ...profile },
     }: AxiosResponse<ProfileWithToken> = yield call(Api.axios.post, '/api/auth/login', { username, password }, { signal: controller.signal });
-
     console.log('authorize. profile: ', profile, '\ntoken: ', token);
     yield call(Api.saveToken, token);
     yield put(setLoginSuccess({ profile, token }));
   } catch (error: any) {
-    console.log('error: ', error.response);
     const message: string = error.response
       ? error.response.data.error || error.response.data.message || error.response.statusText
       : error.message;
@@ -79,8 +77,7 @@ function* loginFlow(): Generator<Effect, void, any> {
         authorizeTask = yield fork(authorize, loginActions.payload!.username, loginActions.payload!.password);
       }
     }
-    const logoutActions: PayloadAction<void, string> = yield take([ActionsType.ON_LOGOUT, ActionsType.ON_LOGIN_FAILURE]);
-
+    const logoutActions: PayloadAction<void, string> = yield take([ActionsType.SET_LOGIN_FAILURE, ActionsType.ON_LOGOUT]);
     if (logoutActions.type === ActionsType.ON_LOGOUT) {
       if (authorizeTask) yield cancel(authorizeTask);
       try {

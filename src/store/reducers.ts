@@ -12,7 +12,6 @@ enum ActionsType {
   ON_LOGIN = 'api/auth/on_login',
   ON_LOGOUT = 'api/auth/on_logout',
   ON_GET_PROFILE = 'api/auth/on_get_profile',
-  ON_LOGIN_FAILURE = 'api/auth/on_login_failure',
 }
 
 const onLogout = createAction(ActionsType.ON_LOGOUT);

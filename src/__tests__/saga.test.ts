@@ -3,25 +3,77 @@ import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { Api, reducer } from '../store';
 import { exportedForTesting as saga_exports } from '../store/saga';
-import { AuthState, AuthStatus } from '../store/auth';
+import { AuthState, AuthStatus, Credential, Profile } from '../store/auth';
 import { call } from 'redux-saga/effects';
-import { onLogout, setToken } from '../store/reducers';
+import { onLogout, setLoginFailure, setLoginSuccess, setToken } from '../store/reducers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-describe('Тест саги fetchData.', () => {
-  const fakeData = { token: 'token' };
-  const error401 = { response: { status: 401, data: { error: 'error401' } } };
-  const errorOther = { response: { status: 404, data: { error: 'error404' } } };
-  const fakeAxiosFn = jest.fn();
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
+const credential: Credential = { username: 'user', password: 'password' };
+const profile: Profile = {
+  id: '1',
+  username: credential.username,
+  name: 'name',
+  created_at: 'date',
+  email: null,
+  email_verified_at: null,
+  avatar: null,
+  updated_at: null,
+};
+const token = 'token';
+const fakeData = { token, ...profile };
+const error401 = { response: { status: 401, data: { error: 'error401' } } };
+const errorOther = { response: { status: 404, data: { error: 'error404' } } };
 
+const fakeAxiosFn = jest.fn();
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+describe('Тест саги authorize.', () => {
+  const abortCall = jest.fn();
+  global.AbortController = class {
+    signal = 'test-signal' as unknown as AbortSignal;
+    abort = abortCall;
+  };
+
+  test('Успешная авторизация. Должна записать токен и profile в store и токен в localstorage', () => {
+    expect.assertions(2);
+    return expectSaga(saga_exports.authorize, credential.username, credential.password)
+      .withReducer(combineReducers(reducer))
+      .provide([
+        [matchers.call.like({ fn: Api.axios.post, args: [credential] }), Promise.resolve({ data: { token, ...profile } })],
+        [call(Api.saveToken, token), null],
+      ])
+      .call(Api.axios.post, '/api/auth/login', credential, { signal: 'test-signal' })
+      .call(Api.saveToken, fakeData.token)
+      .put(setLoginSuccess({ profile: { ...profile }, token }))
+      .run()
+      .then((result) => {
+        expect(result.storeState.api.auth.token).toBe(token);
+        expect(result.storeState.api.auth.status).toBe(AuthStatus.LoggedIn);
+      });
+  });
+  test('Не успешная авторизация. Должна выкинуть exception', () => {
+    expect.assertions(2);
+    return expectSaga(saga_exports.authorize, credential.username, credential.password)
+      .withReducer(combineReducers(reducer))
+      .provide([[matchers.call.like({ fn: Api.axios.post, args: [credential] }), throwError(error401 as any)]])
+      .call(Api.axios.post, '/api/auth/login', credential, { signal: 'test-signal' })
+      .put(setLoginFailure(error401.response.data.error))
+      .run()
+      .then((result) => {
+        console.dir(result);
+        expect(result.storeState.api.auth.error).toBe(error401.response.data.error);
+        expect(result.storeState.api.auth.status).toBe(AuthStatus.Error);
+      });
+  });
+});
+
+describe('Тест саги fetchData.', () => {
   test('Успешный вызов axios. Должна вернуть data из вызова axios', () => {
     fakeAxiosFn.mockResolvedValueOnce({ data: fakeData });
     expect.assertions(2);
     return expectSaga(saga_exports.fetchData, fakeAxiosFn)
-      .withReducer(combineReducers(reducer))
       .run()
       .then((result) => {
         expect(fakeAxiosFn).toBeCalledTimes(1);

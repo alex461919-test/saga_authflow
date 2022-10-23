@@ -8,7 +8,6 @@ import { useLoadingIndicator } from './mix/loadingIndicator';
 
 function App() {
   const store = useAppStore();
-  console.dir(store);
   useLoadingIndicator(store);
   return (
     <div className="App">
