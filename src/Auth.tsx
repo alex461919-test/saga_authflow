@@ -11,12 +11,12 @@ const { Title } = Typography;
 const Auth: React.FC = () => {
   return (
     <Row gutter={[8, 8]}>
-      <Col xs={{ span: 6 }}>
+      <Col xs={{ span: 24 }} lg={{ span: 6 }}>
         <div style={{ padding: '1rem', margin: '1rem', border: '1px solid #e0e0e0', borderRadius: '.25rem' }}>
           <AuthForm />
         </div>
       </Col>
-      <Col span={6}>
+      <Col xs={{ span: 24 }} lg={{ span: 12 }}>
         <div style={{ padding: '1rem', margin: '1rem', border: '1px solid #e0e0e0', borderRadius: '.25rem' }}>
           <Title level={4} style={{ textAlign: 'center' }}>
             Auth state
@@ -24,7 +24,7 @@ const Auth: React.FC = () => {
           <Profile />
         </div>
       </Col>
-      <Col span={6}>
+      <Col xs={{ span: 24 }} lg={{ span: 6 }}>
         <div style={{ padding: '1rem', margin: '1rem', border: '1px solid #e0e0e0', borderRadius: '.25rem' }}>
           <Title level={4} style={{ textAlign: 'center' }}>
             Profile request
@@ -47,9 +47,11 @@ const Whoami: React.FC = () => {
   );
 
   return (
-    <Button type="primary" htmlType="button" onClick={onClick}>
-      Get profile
-    </Button>
+    <Space direction="horizontal" style={{ width: '100%', justifyContent: 'center', margin: '1rem 0' }}>
+      <Button type="primary" htmlType="button" onClick={onClick}>
+        Get profile
+      </Button>
+    </Space>
   );
 };
 
@@ -156,7 +158,7 @@ const AuthForm = () => {
       <Form.Item
         label="Password"
         name="password"
-        style={{ flexWrap: 'nowrap' }}
+        // style={{ flexWrap: 'nowrap' }}
         rules={[
           {
             required: true,
@@ -175,7 +177,7 @@ const AuthForm = () => {
       )}
 
       <Form.Item>
-        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'flex-start', paddingLeft: '8rem' }}>
+        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'flex-end' }}>
           <Button type="primary" htmlType="submit">
             Sign In
           </Button>
@@ -187,13 +189,5 @@ const AuthForm = () => {
     </Form>
   );
 };
-/*
-  <Form.Item name="remember" valuePropName="checked">
-        <Space direction="horizontal" style={{ width: '100%', justifyContent: 'flex-start', paddingLeft: '8rem' }}>
-          <Checkbox>Remember me</Checkbox>
-        </Space>
-      </Form.Item>
-
-*/
 
 export default Auth;
