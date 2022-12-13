@@ -16,4 +16,4 @@ Back-end сделан на laravel с пакетом [lcobucci/jwt](https://gith
 
 Стандартный набор скриптов npm run start , npm run build.
 
-Рабочая сборка на githup https://alex461919-test.github.io/saga_authflow/ .
+Рабочая сборка на github https://alex461919-test.github.io/saga_authflow/ .
